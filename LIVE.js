@@ -9,7 +9,7 @@
 
         btn.style.setProperty(
             "--image-src",
-            'url("https://plcl.me/images/WTicQ.gif")',
+            'url("https://www.image2url.com/r2/default/gifs/1783073015437-d083596a-dcf3-499f-a3cb-a2945e55a86c.gif")',
             "important"
         );
 
