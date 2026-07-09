@@ -282,6 +282,11 @@ p.innerHTML=`
 ⚽ ALL IN ONE
 </a>
 
+<div class="crb-btn-row">
+<a class="crb-btn" href="https://access.vpnceria.life/allinone" target="_blank">
+⚽ PREDIKSI BOLA
+</a>
+
 <a class="crb-btn" href="https://access.vpnceria.life/livescore" target="_blank">
 LIVESCORE ⚽
 </a>
