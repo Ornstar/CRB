@@ -283,7 +283,7 @@ p.innerHTML=`
 </a>
 
 <div class="crb-btn-row">
-<a class="crb-btn" href="https://access.vpnceria.life/allinone" target="_blank">
+<a class="crb-btn" href="https://access.vpnceria.life/prediksi-bola" target="_blank">
 ⚽ PREDIKSI BOLA
 </a>
 
