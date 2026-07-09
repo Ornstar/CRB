@@ -286,10 +286,6 @@ p.innerHTML=`
 <a class="crb-btn" href="https://access.vpnceria.life/prediksi-bola" target="_blank">
 ⚽ PREDIKSI BOLA
 </a>
-
-<a class="crb-btn" href="https://access.vpnceria.life/livescore" target="_blank">
-LIVESCORE ⚽
-</a>
 </div>
 
 <button class="crb-ok" id="crb-ok">OK</button>
