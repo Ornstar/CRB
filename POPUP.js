@@ -3,7 +3,7 @@
 (function(){
 
 const IMG=[
-"https://plcl.me/images/tWdyX.jpg",
+"https://plcl.me/images/7PZTQ.png",
 "https://plcl.me/images/c9Q3n.png",
 "https://plcl.me/images/ngZxj.png"
 ];
