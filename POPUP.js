@@ -30,11 +30,9 @@ return !(t && Date.now()-t<3600000);
 }
 
 function injectStyle(){
-
 if(document.getElementById(STYLE_ID)) return;
 
 const s=document.createElement("style");
-
 s.id=STYLE_ID;
 
 s.textContent=`
@@ -48,7 +46,7 @@ s.textContent=`
 position:fixed;
 inset:0;
 z-index:2147483646;
-background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.78));
+background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.82));
 backdrop-filter:blur(8px);
 -webkit-backdrop-filter:blur(8px);
 animation:crbFadeIn .35s ease forwards;
@@ -67,6 +65,8 @@ align-items:center;
 justify-content:center;
 flex-direction:column;
 gap:10px;
+padding:12px;
+box-sizing:border-box;
 }
 
 #crb-popup-box{
@@ -101,12 +101,12 @@ box-shadow:0 0 16px rgba(168,85,247,.7);
 #crb-popup-img{
 display:block;
 max-width:92vw;
-max-height:62vh;
+max-height:58vh;
 height:auto;
-border-radius:10px;
+border-radius:12px;
 opacity:1;
 transition:opacity .35s ease;
-box-shadow:0 0 22px rgba(168,85,247,.35);
+box-shadow:0 0 22px rgba(168,85,247,.45),0 0 45px rgba(91,33,182,.35);
 }
 
 #crb-popup-img.fade{
@@ -171,6 +171,7 @@ text-shadow:0 0 10px rgba(168,85,247,.9),0 0 25px rgba(168,85,247,.55);
 display:flex;
 gap:10px;
 justify-content:center;
+align-items:center;
 }
 
 .crb-gif-box{
@@ -182,28 +183,61 @@ width:90px;
 width:100%;
 border-radius:12px;
 pointer-events:none;
+box-shadow:0 0 10px rgba(168,85,247,.35);
 }
 
 .crb-btn-row{
+width:min(420px,92vw);
 display:flex;
-gap:12px;
+flex-direction:column;
+gap:10px;
+align-items:center;
+justify-content:center;
 }
 
-.crb-btn,.crb-ok{
+.crb-btn{
 position:relative;
 overflow:hidden;
-width:170px;
-padding:12px 0;
-border-radius:14px;
+width:100%;
+padding:13px 0;
+border-radius:15px;
 font-size:14px;
 cursor:pointer;
 text-decoration:none;
 text-align:center;
 font-weight:900;
+letter-spacing:.5px;
 color:#fff!important;
-background:linear-gradient(180deg,#7c3aed 0%,#5b21b6 25%,#3b0764 60%,#161616 100%);
-border:1px solid #8b5cf6;
-box-shadow:0 0 10px rgba(139,92,246,.55),0 0 25px rgba(139,92,246,.35),0 8px 20px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.15);
+background:linear-gradient(180deg,#8b5cf6 0%,#6d28d9 30%,#3b0764 70%,#111 100%);
+border:1px solid #c084fc;
+box-shadow:0 0 12px rgba(139,92,246,.7),0 0 28px rgba(139,92,246,.38),0 9px 22px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.2);
+transition:transform .18s ease,filter .18s ease;
+}
+
+.crb-ok{
+position:relative;
+overflow:hidden;
+width:120px;
+padding:11px 0;
+border-radius:14px;
+font-size:14px;
+cursor:pointer;
+text-align:center;
+font-weight:900;
+color:#fff!important;
+background:linear-gradient(180deg,#a855f7 0%,#6d28d9 38%,#3b0764 75%,#111 100%);
+border:1px solid #d8b4fe;
+box-shadow:0 0 12px rgba(168,85,247,.8),0 0 25px rgba(168,85,247,.45),0 8px 20px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.2);
+transition:transform .18s ease,filter .18s ease;
+}
+
+.crb-btn:hover,.crb-ok:hover{
+transform:scale(1.045);
+filter:brightness(1.18);
+}
+
+.crb-btn:active,.crb-ok:active{
+transform:scale(.96);
 }
 
 .crb-btn:before,.crb-ok:before{
@@ -219,17 +253,28 @@ animation:crbShine 2s infinite;
 }
 
 @media(max-width:768px){
-.crb-btn,.crb-ok{
-width:150px;
-font-size:12px;
-padding:11px 0;
+#crb-popup{
+gap:9px;
+}
+.crb-btn-row{
+width:92vw;
+gap:9px;
+}
+.crb-btn{
+font-size:13px;
+padding:12px 0;
+}
+.crb-ok{
+width:115px;
+font-size:13px;
+padding:10px 0;
 }
 .crb-gif-box{
 width:78px;
 }
 #crb-popup-img{
 max-width:94vw;
-max-height:58vh;
+max-height:55vh;
 }
 }
 `;
@@ -249,7 +294,6 @@ const o=document.createElement("div");
 o.id=OVERLAY_ID;
 
 const p=document.createElement("div");
-
 p.id=POPUP_ID;
 
 p.innerHTML=`
@@ -278,17 +322,10 @@ p.innerHTML=`
 </div>
 
 <div class="crb-btn-row">
-<a class="crb-btn" href="https://access.vpnceria.life/allinone" target="_blank">
-⚽ ALL IN ONE
-</a>
-
-<div class="crb-btn-row">
-<a class="crb-btn" href="https://access.vpnceria.life/prediksi-bola" target="_blank">
-⚽ PREDIKSI BOLA
-</a>
-</div>
-
+<a class="crb-btn" href="https://access.vpnceria.life/allinone" target="_blank">⚽ ALL IN ONE</a>
+<a class="crb-btn" href="https://access.vpnceria.life/prediksi-bola" target="_blank">🤖 PREDIKSI AI BOLA</a>
 <button class="crb-ok" id="crb-ok">OK</button>
+</div>
 `;
 
 document.body.appendChild(o);
