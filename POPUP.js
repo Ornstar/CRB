@@ -189,11 +189,19 @@ box-shadow:0 0 10px rgba(168,85,247,.35);
 .crb-btn-row{
 width:290px;
 display:flex;
-flex-direction:column;
+flex-wrap:wrap;
 gap:10px;
 align-items:center;
 justify-content:center;
 margin-top:2px;
+}
+
+.crb-btn-row .crb-btn{
+width:135px;
+}
+
+.crb-btn-row .crb-ok{
+width:120px;
 }
 
 .crb-btn{
@@ -337,9 +345,17 @@ p.innerHTML=`
 </div>
 
 <div class="crb-btn-row">
-<a class="crb-btn" href="https://access.vpnceria.life/allinone" target="_blank">⚽ ALL IN ONE</a>
-<a class="crb-btn" href="https://access.vpnceria.life/prediksi-bola" target="_blank">🤖 PREDIKSI AI BOLA</a>
-<button class="crb-ok" id="crb-ok">OK</button>
+<a class="crb-btn" href="https://access.vpnceria.life/allinone" target="_blank">
+⚽ ALL IN ONE
+</a>
+
+<a class="crb-btn" href="https://access.vpnceria.life/prediksi-bola" target="_blank">
+PREDIKSI BOLA ⚽
+</a>
+
+<button class="crb-ok" id="crb-ok">
+OK
+</button>
 </div>
 `;
 
