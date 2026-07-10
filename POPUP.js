@@ -187,13 +187,25 @@ box-shadow:0 0 10px rgba(168,85,247,.35);
 }
 
 .crb-btn-row{
-width:290px;
+width:310px;
 display:flex;
 flex-wrap:wrap;
-gap:10px;
+gap:8px;
 align-items:center;
 justify-content:center;
 margin-top:2px;
+}
+
+.crb-btn-row .crb-btn{
+width:148px;
+font-size:12px;
+padding:12px 0;
+white-space:nowrap;
+}
+
+.crb-btn-row .crb-ok{
+width:120px;
+font-size:13px;
 }
 
 .crb-btn-row .crb-btn{
@@ -279,14 +291,18 @@ width:78px;
 }
 
 .crb-btn-row{
-width:254px;
-gap:9px;
+width:310px;
+gap:8px;
 }
 
 .crb-btn{
-width:100%;
-font-size:13px;
-padding:12px 0;
+font-size:12px;
+padding:11px 0;
+white-space:nowrap;
+}
+
+.crb-btn-row .crb-btn{
+width:148px;
 }
 
 .crb-ok{
