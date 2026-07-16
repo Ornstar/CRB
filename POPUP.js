@@ -3,7 +3,8 @@
 (function(){
 
 const IMG=[
-"https://plcl.me/images/dgYkz.jpg",
+"https://www.image2url.com/r2/default/images/1784222991581-335adc21-8528-4de3-ada4-aa0d08713764.jpg",
+"https://www.image2url.com/r2/default/images/1784223363861-add0273a-cdac-4855-813a-7bb45febaa63.jpg",
 "https://plcl.me/images/c9Q3n.png",
 "https://plcl.me/images/ngZxj.png"
 ];
