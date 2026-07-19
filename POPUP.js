@@ -2,7 +2,7 @@
 
 (function () {
   const IMG = [
-    "https://cdn.phototourl.com/free/2026-07-18-b83e4793-6fea-4194-acb7-9e9f1fc85ac9.jpg",
+    "https://plcl.me/images/ZoNne.jpg",
     "https://www.image2url.com/r2/default/images/1784223363861-add0273a-cdac-4855-813a-7bb45febaa63.jpg",
     "https://plcl.me/images/c9Q3n.png",
     "https://plcl.me/images/ngZxj.png"
