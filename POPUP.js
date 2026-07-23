@@ -9,7 +9,7 @@
   ];
 
   const DELAY_KEY = "popup_delay_1h";
-  const SLIDER_INTERVAL = 10000;
+  const SLIDER_INTERVAL = 7000;
   const STYLE_ID = "crb-popup-style";
   const POPUP_ID = "crb-popup";
   const OVERLAY_ID = "crb-popup-overlay";
@@ -49,14 +49,43 @@
   }
 
   /* ==============================
-     PRELOAD SEMUA GAMBAR SLIDER
+     PRELOAD SEMUA GAMBAR
   ============================== */
 
   function preloadImages() {
-    IMG.forEach(function (url) {
-      const preload = new Image();
-      preload.src = url;
-    });
+    return Promise.all(
+      IMG.map(function (url) {
+        return new Promise(function (resolve) {
+          const preload = new Image();
+          preload.decoding = "async";
+
+          preload.onload = function () {
+            if (typeof preload.decode === "function") {
+              preload
+                .decode()
+                .catch(function () {})
+                .finally(resolve);
+            } else {
+              resolve();
+            }
+          };
+
+          preload.onerror = resolve;
+          preload.src = url;
+
+          if (preload.complete && preload.naturalWidth > 0) {
+            if (typeof preload.decode === "function") {
+              preload
+                .decode()
+                .catch(function () {})
+                .finally(resolve);
+            } else {
+              resolve();
+            }
+          }
+        });
+      })
+    );
   }
 
   /* ==============================
@@ -91,13 +120,13 @@
         }
       }
 
-      @keyframes crbSlideOut {
+      @keyframes crbPopupPullUp {
         from {
           transform: translateY(0);
           opacity: 1;
         }
         to {
-          transform: translateY(25px);
+          transform: translateY(-110vh);
           opacity: 0;
         }
       }
@@ -137,17 +166,25 @@
         gap: 10px;
         padding: 12px;
         box-sizing: border-box;
+        background: transparent;
+        overflow-y: auto;
+      }
+
+      #${POPUP_ID}.pull-up {
+        animation:
+          crbPopupPullUp .72s
+          cubic-bezier(.55, .05, .25, 1)
+          forwards;
+        pointer-events: none;
       }
 
       #crb-popup-box {
         position: relative;
         animation: crbSlideIn .45s ease forwards;
-        filter:
-          drop-shadow(0 18px 40px rgba(0, 0, 0, .6));
-      }
-
-      #crb-popup-box.slide-out {
-        animation: crbSlideOut .45s ease forwards;
+        filter: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        border: none !important;
       }
 
       #crb-close {
@@ -176,23 +213,62 @@
           0 0 16px rgba(168, 85, 247, .7);
       }
 
-      #crb-popup-img {
+      #crb-image-stage {
+        position: relative;
+        display: grid;
+        place-items: center;
+        max-width: 92vw;
+        max-height: 58vh;
+        overflow: hidden;
+        background: transparent !important;
+      }
+
+      #crb-popup-img,
+      #crb-popup-img-next {
+        grid-area: 1 / 1;
         display: block;
         max-width: 92vw;
         max-height: 58vh;
         width: auto;
         height: auto;
         object-fit: contain;
-        border-radius: 12px;
-        opacity: 1;
-        transition: opacity .3s ease;
-        box-shadow:
-          0 0 22px rgba(168, 85, 247, .45),
-          0 0 45px rgba(91, 33, 182, .35);
+        border-radius: 0;
+        box-shadow: none !important;
+        filter: none !important;
+        background: transparent !important;
+        border: none !important;
+        will-change: transform, opacity;
       }
 
-      #crb-popup-img.fade {
+      #crb-popup-img {
+        position: relative;
+        z-index: 1;
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      #crb-popup-img-next {
+        position: relative;
+        z-index: 2;
         opacity: 0;
+        transform: translateX(100%);
+        pointer-events: none;
+      }
+
+      #crb-popup-img-next.slide-rtl {
+        opacity: 1;
+        transform: translateX(0);
+        transition:
+          transform .7s cubic-bezier(.22, .8, .28, 1),
+          opacity .3s ease;
+      }
+
+      #crb-popup-img.slide-old-left {
+        opacity: .28;
+        transform: translateX(-18%);
+        transition:
+          transform .7s cubic-bezier(.22, .8, .28, 1),
+          opacity .55s ease;
       }
 
       .crb-nav {
@@ -396,7 +472,9 @@
           gap: 8px;
         }
 
-        #crb-popup-img {
+        #crb-image-stage,
+        #crb-popup-img,
+        #crb-popup-img-next {
           max-width: 94vw;
           max-height: 55vh;
         }
@@ -431,7 +509,7 @@
      BUAT POPUP
   ============================== */
 
-  function createPopup() {
+  async function createPopup() {
     if (
       popupCreated ||
       !canShowPopup() ||
@@ -441,9 +519,9 @@
     }
 
     popupCreated = true;
-
-    preloadImages();
     injectStyle();
+
+    await preloadImages();
 
     const overlay = document.createElement("div");
     overlay.id = OVERLAY_ID;
@@ -467,11 +545,20 @@
           ‹
         </button>
 
-        <img
-          id="crb-popup-img"
-          src="${IMG[0]}"
-          alt="World Cup 2026 Slide 1"
-        >
+        <div id="crb-image-stage">
+          <img
+            id="crb-popup-img"
+            src="${IMG[0]}"
+            alt="Dirgahayu Indonesia Slide 1"
+          >
+
+          <img
+            id="crb-popup-img-next"
+            src=""
+            alt=""
+            aria-hidden="true"
+          >
+        </div>
 
         <button
           type="button"
@@ -486,7 +573,7 @@
       </div>
 
       <div id="crb-title">
-        WORLD CUP 2026
+        DIRGAHAYU INDONESIA
       </div>
 
       <div class="crb-gif-row">
@@ -500,8 +587,8 @@
 
         <div class="crb-gif-box">
           <img
-            src="https://media.tenor.com/Hm5Hk1U_uVoAAAAd/fifa-world-cup-2026-fifa.gif"
-            alt="FIFA World Cup 2026"
+            src="https://www.image2url.com/r2/default/gifs/1784829809669-8e602d39-2842-4aa9-97c3-48381ca2780f.gif"
+            alt="Dirgahayu Indonesia"
           >
         </div>
 
@@ -548,17 +635,17 @@
     document.body.appendChild(overlay);
     document.body.appendChild(popup);
 
-    const popupBox =
-      document.getElementById("crb-popup-box");
-
     const sliderImage =
       document.getElementById("crb-popup-img");
+
+    const nextSliderImage =
+      document.getElementById("crb-popup-img-next");
 
     const dotsContainer =
       document.getElementById("crb-dots");
 
     /* ==============================
-       BUAT 4 DOT SLIDER
+       DOT SLIDER
     ============================== */
 
     function renderDots() {
@@ -587,59 +674,107 @@
     }
 
     /* ==============================
-       PINDAH GAMBAR
+       SLIDE KANAN KE KIRI
     ============================== */
 
     function changeSlide(newIndex) {
-      if (changingSlide) return;
-
       if (
+        changingSlide ||
         newIndex < 0 ||
-        newIndex >= IMG.length
+        newIndex >= IMG.length ||
+        newIndex === currentIndex
       ) {
         return;
       }
 
-      if (newIndex === currentIndex) return;
-
       changingSlide = true;
-      sliderImage.classList.add("fade");
 
-      const newImage = new Image();
-      newImage.src = IMG[newIndex];
+      nextSliderImage.classList.remove("slide-rtl");
+      sliderImage.classList.remove("slide-old-left");
 
-      function showNewImage() {
+      nextSliderImage.src = IMG[newIndex];
+      nextSliderImage.alt =
+        "Dirgahayu Indonesia Slide " + (newIndex + 1);
+
+      nextSliderImage.style.transition = "none";
+      nextSliderImage.style.opacity = "0";
+      nextSliderImage.style.transform =
+        "translateX(100%)";
+
+      void nextSliderImage.offsetWidth;
+
+      nextSliderImage.style.transition = "";
+      nextSliderImage.style.opacity = "";
+      nextSliderImage.style.transform = "";
+
+      sliderImage.classList.add("slide-old-left");
+      nextSliderImage.classList.add("slide-rtl");
+
+      let finished = false;
+
+      function finishSlide() {
+        if (finished) return;
+        finished = true;
+
+        nextSliderImage.removeEventListener(
+          "transitionend",
+          handleTransitionEnd
+        );
+
         currentIndex = newIndex;
 
         sliderImage.src = IMG[currentIndex];
         sliderImage.alt =
-          "World Cup 2026 Slide " + (currentIndex + 1);
+          "Dirgahayu Indonesia Slide " +
+          (currentIndex + 1);
 
-        renderDots();
+        sliderImage.classList.remove("slide-old-left");
+        sliderImage.style.transition = "none";
+        sliderImage.style.opacity = "1";
+        sliderImage.style.transform = "translateX(0)";
 
         requestAnimationFrame(function () {
-          sliderImage.classList.remove("fade");
-          changingSlide = false;
+          requestAnimationFrame(function () {
+            nextSliderImage.style.transition = "none";
+            nextSliderImage.classList.remove("slide-rtl");
+            nextSliderImage.style.opacity = "0";
+            nextSliderImage.style.transform =
+              "translateX(100%)";
+            nextSliderImage.src = "";
+            nextSliderImage.alt = "";
+
+            requestAnimationFrame(function () {
+              sliderImage.style.transition = "";
+              sliderImage.style.opacity = "";
+              sliderImage.style.transform = "";
+
+              nextSliderImage.style.transition = "";
+              nextSliderImage.style.opacity = "";
+              nextSliderImage.style.transform = "";
+
+              changingSlide = false;
+            });
+          });
         });
+
+        renderDots();
       }
 
-      newImage.onload = function () {
-        setTimeout(showNewImage, 200);
-      };
-
-      newImage.onerror = function () {
-        console.warn(
-          "Gambar slider gagal dimuat:",
-          IMG[newIndex]
-        );
-
-        sliderImage.classList.remove("fade");
-        changingSlide = false;
-      };
-
-      if (newImage.complete) {
-        setTimeout(showNewImage, 200);
+      function handleTransitionEnd(event) {
+        if (
+          event.target === nextSliderImage &&
+          event.propertyName === "transform"
+        ) {
+          finishSlide();
+        }
       }
+
+      nextSliderImage.addEventListener(
+        "transitionend",
+        handleTransitionEnd
+      );
+
+      window.setTimeout(finishSlide, 900);
     }
 
     function nextSlide() {
@@ -675,7 +810,7 @@
     function closePopup() {
       clearInterval(sliderTimer);
 
-      popupBox.classList.add("slide-out");
+      popup.classList.add("pull-up");
       overlay.classList.add("fade-out");
 
       localStorage.setItem(
@@ -686,7 +821,8 @@
       setTimeout(function () {
         popup.remove();
         overlay.remove();
-      }, 450);
+        popupCreated = false;
+      }, 760);
     }
 
     /* ==============================
@@ -715,10 +851,7 @@
       .getElementById("crb-ok")
       .addEventListener("click", closePopup);
 
-    /* Tampilan awal menghasilkan 4 titik */
     renderDots();
-
-    /* Jalankan slider otomatis */
     startSliderTimer();
   }
 
