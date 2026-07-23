@@ -1,4 +1,5 @@
 (function () {
+    "use strict";
 
     const _b64 = [
         "LndpZGdldC10aXRsZS1jb250YWluZXI=",
@@ -20,55 +21,102 @@
     const css = document.createElement("style");
 
     css.textContent = `
-        .btn-atas{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            width:100%;
-            padding:5px 8px;
-            box-sizing:border-box;
-            gap:6px
+        .btn-atas {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            align-items: center;
+            width: 100%;
+            padding: 6px 8px;
+            margin: 6px 0;
+            box-sizing: border-box;
+            gap: 6px;
         }
-        .btn-atas a{
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            flex:1
+
+        .btn-atas a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 0;
+            text-decoration: none;
         }
-        .btn-atas a img{
-            width:60px;
-            height:60px;
-            display:block;
-            object-fit:contain
+
+        .btn-atas a img {
+            display: block;
+            width: 60px;
+            max-width: 100%;
+            height: 60px;
+            object-fit: contain;
+            border: 0;
+        }
+
+        @media (max-width: 480px) {
+            .btn-atas {
+                padding: 5px 4px;
+                gap: 3px;
+            }
+
+            .btn-atas a img {
+                width: 52px;
+                height: 52px;
+            }
         }
     `;
 
     document.head.appendChild(css);
 
     let checker = setInterval(function () {
+        const banner = document.querySelector(".banner-img");
+        const jackpotSection = document.querySelector(
+            ".jackpot-play-section"
+        );
 
-        const target = document.querySelector(D(0));
+        const existingBox = document.querySelector("." + D(1));
 
-        if (!target || document.querySelector("." + D(1))) {
+        if (existingBox) {
+            clearInterval(checker);
+            return;
+        }
+
+        if (!banner || !jackpotSection) {
             return;
         }
 
         const box = document.createElement("div");
-
         box.className = D(1);
 
         box.innerHTML = `
-            <a href="${D(2)}" target="_blank"><img src="${D(7)}"></a>
-            <a href="${D(3)}" target="_blank"><img src="${D(8)}"></a>
-            <a href="${D(4)}" target="_blank"><img src="${D(9)}"></a>
-            <a href="${D(5)}" target="_blank"><img src="${D(10)}"></a>
-            <a href="${D(6)}" target="_blank"><img src="${D(11)}"></a>
+            <a href="${D(2)}" target="_blank" rel="noopener noreferrer">
+                <img src="${D(7)}" alt="CERIABET">
+            </a>
+
+            <a href="${D(3)}" target="_blank" rel="noopener noreferrer">
+                <img src="${D(8)}" alt="Telegram">
+            </a>
+
+            <a href="${D(4)}" target="_blank" rel="noopener noreferrer">
+                <img src="${D(9)}" alt="RTP CERIABET">
+            </a>
+
+            <a href="${D(5)}" target="_blank" rel="noopener noreferrer">
+                <img src="${D(10)}" alt="Live Score">
+            </a>
+
+            <a href="${D(6)}" target="_blank" rel="noopener noreferrer">
+                <img src="${D(11)}" alt="CERIABET">
+            </a>
         `;
 
-        target.parentNode.insertBefore(box, target);
+        // Masukkan tombol tepat di atas jackpot-play-section
+        jackpotSection.parentNode.insertBefore(
+            box,
+            jackpotSection
+        );
 
         clearInterval(checker);
-
     }, 500);
 
+    // Mencegah interval berjalan terus apabila elemen tidak ditemukan
+    setTimeout(function () {
+        clearInterval(checker);
+    }, 30000);
 })();
