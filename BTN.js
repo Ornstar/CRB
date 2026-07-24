@@ -17,6 +17,7 @@
     ];
 
     const D = i => atob(_b64[i]);
+    const MOBILE_BREAKPOINT = 480;
 
     const css = document.createElement("style");
 
@@ -49,9 +50,20 @@
             border: 0;
         }
 
+        @media (min-width: 481px) {
+            .btn-atas {
+                position: relative;
+                z-index: 5;
+                max-width: 1200px;
+                margin: 8px auto;
+                padding: 8px 12px;
+            }
+        }
+
         @media (max-width: 480px) {
             .btn-atas {
                 padding: 5px 4px;
+                margin: 6px 0;
                 gap: 3px;
             }
 
@@ -64,24 +76,14 @@
 
     document.head.appendChild(css);
 
-    let checker = setInterval(function () {
-        const banner = document.querySelector(".banner-img");
-        const jackpotSection = document.querySelector(
-            ".jackpot-play-section"
-        );
+    function createButtonBox() {
+        let box = document.querySelector("." + D(1));
 
-        const existingBox = document.querySelector("." + D(1));
-
-        if (existingBox) {
-            clearInterval(checker);
-            return;
+        if (box) {
+            return box;
         }
 
-        if (!banner || !jackpotSection) {
-            return;
-        }
-
-        const box = document.createElement("div");
+        box = document.createElement("div");
         box.className = D(1);
 
         box.innerHTML = `
@@ -106,16 +108,110 @@
             </a>
         `;
 
-        // Masukkan tombol tepat di atas jackpot-play-section
-        jackpotSection.parentNode.insertBefore(
-            box,
-            jackpotSection
+        return box;
+    }
+
+    function placeButtonBox() {
+        const box = createButtonBox();
+        const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+
+        if (isMobile) {
+            // MOBILE:
+            // Tetap berada tepat di atas jackpot-play-section.
+            const jackpotSection = document.querySelector(
+                ".jackpot-play-section"
+            );
+
+            if (!jackpotSection || !jackpotSection.parentNode) {
+                return false;
+            }
+
+            if (box.nextElementSibling !== jackpotSection) {
+                jackpotSection.parentNode.insertBefore(
+                    box,
+                    jackpotSection
+                );
+            }
+
+            return true;
+        }
+
+        // DESKTOP:
+        // Berada di bawah announcement-outer-container
+        // dan di atas home-inner-container.
+        const announcementOuter = document.querySelector(
+            ".announcement-outer-container"
         );
 
-        clearInterval(checker);
+        const homeInner = document.querySelector(
+            ".home-inner-container"
+        );
+
+        if (!announcementOuter || !homeInner) {
+            return false;
+        }
+
+        /*
+         * Apabila announcement dan home-inner berada pada parent
+         * yang sama, masukkan tombol tepat sebelum home-inner.
+         */
+        if (
+            announcementOuter.parentNode &&
+            announcementOuter.parentNode === homeInner.parentNode
+        ) {
+            if (box.nextElementSibling !== homeInner) {
+                homeInner.parentNode.insertBefore(box, homeInner);
+            }
+
+            return true;
+        }
+
+        /*
+         * Fallback apabila struktur parent berbeda:
+         * masukkan tombol tepat setelah announcement.
+         */
+        if (announcementOuter.parentNode) {
+            announcementOuter.insertAdjacentElement("afterend", box);
+            return true;
+        }
+
+        return false;
+    }
+
+    let checker = setInterval(function () {
+        const success = placeButtonBox();
+
+        if (success) {
+            clearInterval(checker);
+        }
     }, 500);
 
-    // Mencegah interval berjalan terus apabila elemen tidak ditemukan
+    // Atur ulang posisi ketika ukuran layar berubah
+    let resizeTimer;
+
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+
+        resizeTimer = setTimeout(function () {
+            placeButtonBox();
+        }, 150);
+    });
+
+    // Coba kembali apabila isi halaman dimuat secara dinamis
+    const observer = new MutationObserver(function () {
+        const box = document.querySelector("." + D(1));
+
+        if (!box) {
+            placeButtonBox();
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    // Hentikan interval setelah 30 detik
     setTimeout(function () {
         clearInterval(checker);
     }, 30000);
