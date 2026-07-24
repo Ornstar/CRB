@@ -1,323 +1,448 @@
 "use strict";
 
 (function () {
-  const STYLE_ID = "crb-ai-style-final-v3";
-  const BTN_ID = "crb-ai-btn-final-v3";
-  const MODAL_ID = "crb-ai-modal-final-v3";
+  /* =====================================================
+     PARTNER POPUP BUTTON — GITHUB VERSION
+     Posisi: kiri bawah
+     Tampilan: mobile
+     Klik: membuka popup fullscreen
+  ===================================================== */
 
-  const LINK = "https://access.vpnceria.life/prediksi-bola";
-  const LOGO = "https://plcl.me/images/2rkpt.png";
-  const GENERATE_GIF = "https://www.image2url.com/r2/default/gifs/1783499727684-7bf03515-d569-4857-9129-a838c5b78831.gif";
+  const STYLE_ID = "partner-popup-style-v4";
+  const BTN_ID = "partner-popup-button-v4";
+  const MODAL_ID = "partner-popup-modal-v4";
+  const FRAME_ID = "partner-popup-frame-v4";
+
+  /* Link yang dibuka di dalam popup */
+  const LINK =
+    "https://goviplink.live/p4st15u5k5es";
+
+  /* GIF tombol kiri bawah */
+  const LOGO =
+    "https://www.image2url.com/r2/default/images/1784851724730-ac64fdd0-4de3-46dd-bc91-753187b8640d.gif";
+
+  /* Pengaturan posisi tombol */
+  const LEFT = 15;
+  const BOTTOM = 96;
+  const SIZE = 50;
+
+  /* Maksimal ukuran layar yang menampilkan tombol */
+  const MOBILE_MAX_WIDTH = 768;
+
+  /*
+   * true  = tombol tampil di semua halaman.
+   * false = tombol hanya tampil pada homepage.
+   *
+   * Untuk GitHub Pages disarankan true karena URL dapat
+   * menggunakan nama repository.
+   */
+  const SHOW_ON_ALL_PAGES = true;
+
+  function isAllowedPage() {
+    if (SHOW_ON_ALL_PAGES) return true;
+
+    const path = window.location.pathname
+      .replace(/\/+$/, "")
+      .toLowerCase();
+
+    return (
+      path === "" ||
+      path === "/" ||
+      path.endsWith("/index.html") ||
+      path.includes("/home")
+    );
+  }
 
   function injectStyle() {
+    if (!isAllowedPage()) return;
     if (document.getElementById(STYLE_ID)) return;
 
-    const s = document.createElement("style");
-    s.id = STYLE_ID;
+    const style = document.createElement("style");
+    style.id = STYLE_ID;
 
-    s.textContent = `
+    style.textContent = `
       #${BTN_ID}{
-        width:100%;
-        margin:10px 0 0 0;
-        padding:10px 12px;
-        background:
-          linear-gradient(
-            180deg,
-            #8b2484 0%,
-            #77146f 18%,
-            #6a0d63 40%,
-            #5b0957 65%,
-            #460442 100%
-          );
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
+        position:fixed;
+        left:max(${LEFT}px, env(safe-area-inset-left));
+        bottom:calc(${BOTTOM}px + env(safe-area-inset-bottom));
+        width:${SIZE}px;
+        height:${SIZE}px;
+        padding:0;
+        margin:0;
+        border:0;
+        border-radius:50%;
+        background:transparent;
+        overflow:visible;
+        display:none;
         cursor:pointer;
-        box-sizing:border-box;
-        color:#fff;
-        font-family:inherit;
-        font-size:14px;
-        font-weight:500;
-        line-height:1.3;
-        letter-spacing:0;
-        text-transform:none;
-        border:none;
-        border-top:1px solid rgba(255,255,255,.18);
-        border-bottom:1px solid rgba(0,0,0,.45);
+        z-index:2147483600;
         outline:none;
-        box-shadow:
-          inset 0 1px 0 rgba(255,255,255,.10),
-          inset 0 -1px 0 rgba(0,0,0,.35),
-          0 1px 2px rgba(0,0,0,.35);
-        position:relative;
-        overflow:hidden;
-        -webkit-tap-highlight-color:transparent;
+        text-decoration:none;
         user-select:none;
-      }
-
-      #${BTN_ID}:before{
-        content:"";
-        position:absolute;
-        left:0;
-        right:0;
-        top:0;
-        height:1px;
-        background:rgba(255,255,255,.25);
-        pointer-events:none;
+        -webkit-user-select:none;
+        -webkit-tap-highlight-color:transparent;
+        transition:
+          transform .18s ease,
+          opacity .18s ease;
       }
 
       #${BTN_ID}:active{
+        transform:scale(.92);
         opacity:.88;
       }
 
-      .crb-ai-left{
-        display:flex;
-        align-items:center;
-        gap:8px;
-        min-width:0;
-        flex:1 1 auto;
-        position:relative;
-        z-index:2;
-      }
-
-      .crb-ai-left img{
-        width:23px;
-        height:23px;
-        object-fit:contain;
-        flex:0 0 auto;
+      #${BTN_ID} img{
+        width:100%;
+        height:100%;
         display:block;
+        border-radius:50%;
+        object-fit:cover;
+        pointer-events:none;
       }
 
-      .crb-ai-left span{
-        display:block;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-        font-family:inherit;
-        font-size:14px;
-        font-weight:500;
-        color:#fff;
-      }
-
-      .crb-ai-generate{
+      #${BTN_ID}::after{
+        content:"1";
+        position:absolute;
+        top:-4px;
+        right:-4px;
+        width:14px;
+        height:14px;
+        box-sizing:content-box;
         display:flex;
         align-items:center;
         justify-content:center;
-        flex:0 0 auto;
-        margin-left:10px;
-        position:relative;
+        border:2px solid #fff;
+        border-radius:50%;
+        background:#ff0033;
+        color:#fff;
+        font-family:Arial,Helvetica,sans-serif;
+        font-size:9px;
+        font-weight:900;
+        line-height:1;
+        box-shadow:
+          0 0 4px rgba(255,0,51,.7),
+          0 2px 5px rgba(0,0,0,.35);
+        pointer-events:none;
         z-index:2;
-      }
-
-      .crb-ai-generate img{
-        width:70px;
-        height:26px;
-        object-fit:cover;
-        display:block;
-        border-radius:20px;
       }
 
       #${MODAL_ID}{
         position:fixed;
         inset:0;
+        width:100%;
+        height:100%;
         width:100vw;
-        height:100vh;
-        z-index:2147483647;
-        background:#000;
+        height:100dvh;
         display:none;
         overflow:hidden;
+        background:#000;
+        z-index:2147483647;
+        overscroll-behavior:none;
       }
 
       #${MODAL_ID}.show{
         display:block;
       }
 
-      .crb-ai-close{
-        position:fixed;
-        top:10px;
-        right:10px;
-        width:38px;
-        height:38px;
-        border-radius:50%;
-        background:linear-gradient(180deg,#a855f7,#3b0764);
-        color:#fff;
-        border:1px solid #e9d5ff;
-        font-size:23px;
-        font-weight:900;
-        cursor:pointer;
-        z-index:2147483647;
-        box-shadow:0 0 16px rgba(168,85,247,.9),0 6px 18px rgba(0,0,0,.6);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        line-height:1;
-        -webkit-tap-highlight-color:transparent;
-      }
-
-      .crb-ai-close:active{
-        transform:scale(.94);
-      }
-
-      .crb-ai-frame{
+      #${FRAME_ID}{
+        position:absolute;
+        inset:0;
         width:100%;
         height:100%;
-        border:0;
         display:block;
+        border:0;
+        outline:0;
         background:#000;
       }
 
-      .crb-ai-loader{
-        position:fixed;
+      .partner-popup-loader{
+        position:absolute;
         inset:0;
-        z-index:2147483646;
         display:flex;
         align-items:center;
         justify-content:center;
         background:#000;
         color:#fff;
-        font-family:inherit;
+        font-family:Arial,Helvetica,sans-serif;
         font-size:14px;
         font-weight:600;
+        z-index:3;
       }
 
-      .crb-ai-loader:before{
+      .partner-popup-loader::before{
         content:"";
-        width:34px;
-        height:34px;
-        border-radius:50%;
-        border:3px solid rgba(255,255,255,.25);
-        border-top-color:#a855f7;
+        width:32px;
+        height:32px;
         margin-right:10px;
-        animation:crbAiSpin .8s linear infinite;
+        border:3px solid rgba(255,255,255,.24);
+        border-top-color:#a855f7;
+        border-radius:50%;
+        animation:partnerPopupSpin .8s linear infinite;
       }
 
-      @keyframes crbAiSpin{
-        to{transform:rotate(360deg)}
+      .partner-popup-close{
+        position:absolute;
+        top:max(10px, env(safe-area-inset-top));
+        right:max(10px, env(safe-area-inset-right));
+        width:40px;
+        height:40px;
+        padding:0;
+        margin:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border:1px solid rgba(255,255,255,.85);
+        border-radius:50%;
+        background:
+          linear-gradient(
+            180deg,
+            #b868ff 0%,
+            #7e22ce 48%,
+            #3b0764 100%
+          );
+        color:#fff;
+        font-family:Arial,Helvetica,sans-serif;
+        font-size:26px;
+        font-weight:900;
+        line-height:1;
+        cursor:pointer;
+        z-index:5;
+        box-shadow:
+          0 0 16px rgba(168,85,247,.9),
+          0 6px 18px rgba(0,0,0,.6);
+        outline:none;
+        -webkit-tap-highlight-color:transparent;
+        transition:transform .15s ease;
       }
 
-      @media(max-width:480px){
+      .partner-popup-close:active{
+        transform:scale(.92);
+      }
+
+      @keyframes partnerPopupSpin{
+        to{
+          transform:rotate(360deg);
+        }
+      }
+
+      @media(max-width:${MOBILE_MAX_WIDTH}px){
         #${BTN_ID}{
-          padding:9px 10px;
-          font-size:13px;
+          display:block;
         }
+      }
 
-        .crb-ai-left img{
-          width:22px;
-          height:22px;
-        }
-
-        .crb-ai-left span{
-          font-size:13px;
-        }
-
-        .crb-ai-generate img{
-          width:86px;
-          height:28px;
-        }
-
-        .crb-ai-close{
-          width:36px;
-          height:36px;
-          font-size:22px;
+      @media(min-width:${MOBILE_MAX_WIDTH + 1}px){
+        #${BTN_ID}{
+          display:none !important;
         }
       }
     `;
 
-    document.head.appendChild(s);
+    document.head.appendChild(style);
   }
 
-  function createButton() {
-    if (document.getElementById(BTN_ID)) return;
+  function lockPageScroll() {
+    document.documentElement.dataset.partnerOldOverflow =
+      document.documentElement.style.overflow || "";
 
-    const mainMenu = document.querySelector("#main_menu_outer_container");
-    if (!mainMenu) return;
+    document.body.dataset.partnerOldOverflow =
+      document.body.style.overflow || "";
 
-    injectStyle();
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+  }
 
-    const btn = document.createElement("div");
-    btn.id = BTN_ID;
-    btn.setAttribute("role", "button");
-    btn.setAttribute("tabindex", "0");
-    btn.innerHTML = `
-      <div class="crb-ai-left">
-        <img src="${LOGO}" alt="">
-        <span>PREDIKSI BOLA AI GENERATE</span>
-      </div>
+  function unlockPageScroll() {
+    document.documentElement.style.overflow =
+      document.documentElement.dataset.partnerOldOverflow || "";
 
-      <div class="crb-ai-generate">
-        <img src="${GENERATE_GIF}" alt="">
-      </div>
-    `;
+    document.body.style.overflow =
+      document.body.dataset.partnerOldOverflow || "";
 
-    mainMenu.parentNode.insertBefore(btn, mainMenu);
+    delete document.documentElement.dataset.partnerOldOverflow;
+    delete document.body.dataset.partnerOldOverflow;
+  }
+
+  function createModal() {
+    const existingModal =
+      document.getElementById(MODAL_ID);
+
+    if (existingModal) return existingModal;
 
     const modal = document.createElement("div");
+
     modal.id = MODAL_ID;
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-hidden", "true");
+    modal.setAttribute("aria-label", "Partner popup");
+
     modal.innerHTML = `
-      <div class="crb-ai-loader">Loading...</div>
-      <button type="button" class="crb-ai-close">×</button>
-      <iframe class="crb-ai-frame" src="" allowfullscreen></iframe>
+      <div class="partner-popup-loader">
+        Loading...
+      </div>
+
+      <button
+        type="button"
+        class="partner-popup-close"
+        aria-label="Tutup popup"
+        title="Tutup"
+      >
+        ×
+      </button>
+
+      <iframe
+        id="${FRAME_ID}"
+        src=""
+        title="Partner"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
     `;
 
     document.body.appendChild(modal);
 
-    const frame = modal.querySelector(".crb-ai-frame");
-    const close = modal.querySelector(".crb-ai-close");
-    const loader = modal.querySelector(".crb-ai-loader");
+    const frame =
+      modal.querySelector(`#${FRAME_ID}`);
 
-    function openModal() {
-      loader.style.display = "flex";
-      frame.src = LINK;
-      modal.classList.add("show");
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    }
+    const loader =
+      modal.querySelector(".partner-popup-loader");
+
+    const closeButton =
+      modal.querySelector(".partner-popup-close");
 
     function closeModal() {
       modal.classList.remove("show");
-      frame.src = "";
+      modal.setAttribute("aria-hidden", "true");
+
+      frame.src = "about:blank";
       loader.style.display = "flex";
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
+
+      unlockPageScroll();
     }
 
-    btn.onclick = openModal;
-
-    btn.onkeydown = function (e) {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openModal();
-      }
-    };
-
-    frame.onload = function () {
-      loader.style.display = "none";
-    };
-
-    close.onclick = closeModal;
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("show")) {
-        closeModal();
+    frame.addEventListener("load", function () {
+      /*
+       * about:blank juga memicu load saat modal ditutup.
+       * Loader hanya disembunyikan saat modal sedang terbuka.
+       */
+      if (modal.classList.contains("show")) {
+        loader.style.display = "none";
       }
     });
+
+    closeButton.addEventListener(
+      "click",
+      closeModal
+    );
+
+    modal.closePartnerPopup = closeModal;
+
+    return modal;
+  }
+
+  function openModal() {
+    const modal = createModal();
+
+    const frame =
+      modal.querySelector(`#${FRAME_ID}`);
+
+    const loader =
+      modal.querySelector(".partner-popup-loader");
+
+    loader.style.display = "flex";
+
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+
+    lockPageScroll();
+
+    /*
+     * Sedikit jeda agar modal tampil terlebih dahulu
+     * sebelum halaman iframe mulai dimuat.
+     */
+    window.setTimeout(function () {
+      frame.src = LINK;
+    }, 30);
+  }
+
+  function createButton() {
+    if (!isAllowedPage()) return;
+    if (document.getElementById(BTN_ID)) return;
+
+    const hideUntil =
+      window.localStorage.getItem(
+        "partnerBtnHideUntil"
+      );
+
+    if (
+      hideUntil &&
+      Date.now() < Number.parseInt(hideUntil, 10)
+    ) {
+      return;
+    }
+
+    const button =
+      document.createElement("button");
+
+    button.id = BTN_ID;
+    button.type = "button";
+    button.setAttribute(
+      "aria-label",
+      "Buka partner"
+    );
+
+    button.innerHTML = `
+      <img
+        src="${LOGO}"
+        alt=""
+        draggable="false"
+      >
+    `;
+
+    button.addEventListener(
+      "click",
+      openModal
+    );
+
+    document.body.appendChild(button);
+  }
+
+  function handleEscape(event) {
+    if (event.key !== "Escape") return;
+
+    const modal =
+      document.getElementById(MODAL_ID);
+
+    if (
+      modal &&
+      modal.classList.contains("show") &&
+      typeof modal.closePartnerPopup === "function"
+    ) {
+      modal.closePartnerPopup();
+    }
   }
 
   function init() {
-    let count = 0;
+    if (!isAllowedPage()) return;
 
-    const timer = setInterval(function () {
-      createButton();
-      count++;
+    injectStyle();
+    createModal();
+    createButton();
 
-      if (document.getElementById(BTN_ID) || count >= 60) {
-        clearInterval(timer);
-      }
-    }, 500);
+    document.addEventListener(
+      "keydown",
+      handleEscape
+    );
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener(
+      "DOMContentLoaded",
+      init,
+      { once: true }
+    );
   } else {
     init();
   }
