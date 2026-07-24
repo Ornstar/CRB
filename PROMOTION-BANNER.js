@@ -2,7 +2,7 @@
 
     const D = s => atob(s);
 
-    const BANNER = D("aHR0cHM6Ly9wbGNsLm1lL2ltYWdlcy8yVWZYbS5qcGc=");
+    const BANNER = D("aHR0cHM6Ly9wbGNsLm1lL2ltYWdlcy95ZHlWYy5qcGc=");
     const LINK   = D("aHR0cHM6Ly9hY2Nlc3MudnBuY2VyaWEubGlmZS9hbGxpbm9uZQ==");
     const ATTR   = D("ZGF0YS1iYW5uZXItY2VyaWFiZXQ=");
 
