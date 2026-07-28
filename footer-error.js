@@ -2,260 +2,223 @@
 (() => {
   "use strict";
 
-  const STYLE_ID = "ceriabet-footer-fix-v2";
-  const LABEL_CLASS = "ceriabet-center-label";
+  const ID = "ceriabet-footer-hard-override";
+  if (window[ID]) return;
+  window[ID] = true;
 
-  const css = `
-    @keyframes ceriabetFooterSpinV2 {
-      to { transform: rotate(360deg); }
-    }
+  const set = (el, prop, value) => {
+    if (el) el.style.setProperty(prop, value, "important");
+  };
 
-    body {
-      padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important;
-    }
+  const ensureLabel = (button, isDeposit) => {
+    let label = button.querySelector(":scope > .ceriabet-center-label");
 
-    footer.site-footer {
-      position: fixed !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
-      z-index: 2147483000 !important;
-      min-height: 74px !important;
-      padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px)) !important;
-      display: grid !important;
-      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-      align-items: end !important;
-      gap: 6px !important;
-      overflow: visible !important;
-      background: linear-gradient(180deg, #4c0a59 0%, #25022f 100%) !important;
-      border-top: 1px solid rgba(231, 73, 255, .45) !important;
-      box-shadow: 0 -8px 24px rgba(0, 0, 0, .45) !important;
-      box-sizing: border-box !important;
-    }
-
-    footer.site-footer > a {
-      position: relative !important;
-      min-width: 0 !important;
-      width: 100% !important;
-      height: 56px !important;
-      min-height: 56px !important;
-      padding: 6px 3px !important;
-      margin: 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 3px !important;
-      border: 1px solid rgba(179, 91, 209, .72) !important;
-      border-radius: 13px !important;
-      background: rgba(18, 3, 27, .72) !important;
-      color: #d7c6e2 !important;
-      box-shadow: inset 0 0 8px rgba(173, 52, 224, .08) !important;
-      text-align: center !important;
-      text-decoration: none !important;
-      overflow: hidden !important;
-      box-sizing: border-box !important;
-      isolation: isolate !important;
-    }
-
-    footer.site-footer > a[data-active="true"] {
-      color: #ff42dc !important;
-      border-color: #d82eff !important;
-      box-shadow: inset 0 0 10px rgba(216, 46, 255, .18) !important;
-    }
-
-    footer.site-footer > a img,
-    footer.site-footer > a svg,
-    footer.site-footer > a i {
-      position: relative !important;
-      z-index: 3 !important;
-      width: 21px !important;
-      height: 21px !important;
-      max-width: 21px !important;
-      max-height: 21px !important;
-      margin: 0 !important;
-      object-fit: contain !important;
-    }
-
-    footer.site-footer > a,
-    footer.site-footer > a span,
-    footer.site-footer > a div,
-    footer.site-footer > a small {
-      font-size: 9px !important;
-      line-height: 1.05 !important;
-      white-space: nowrap !important;
-    }
-
-    footer.site-footer > a.ceriabet-center-btn {
-      width: 66px !important;
-      min-width: 66px !important;
-      max-width: 66px !important;
-      height: 66px !important;
-      min-height: 66px !important;
-      padding: 8px 4px !important;
-      justify-self: center !important;
-      align-self: start !important;
-      transform: translateY(-19px) !important;
-      border: 0 !important;
-      border-radius: 50% !important;
-      background: #24022f !important;
-      color: #ff72ed !important;
-      overflow: hidden !important;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, .45), 0 0 14px rgba(202, 45, 255, .26) !important;
-    }
-
-    footer.site-footer > a.ceriabet-center-btn::before {
-      content: "" !important;
-      position: absolute !important;
-      inset: -26px !important;
-      z-index: 0 !important;
-      border-radius: 50% !important;
-      background: conic-gradient(
-        #4b076d 0deg,
-        #7c20ff 55deg,
-        #f066ff 115deg,
-        #b72cff 175deg,
-        #6c1aff 240deg,
-        #ff70eb 305deg,
-        #4b076d 360deg
-      ) !important;
-      animation: ceriabetFooterSpinV2 3s linear infinite !important;
-      pointer-events: none !important;
-    }
-
-    footer.site-footer > a.ceriabet-center-btn::after {
-      content: "" !important;
-      position: absolute !important;
-      inset: 3px !important;
-      z-index: 1 !important;
-      border-radius: 50% !important;
-      background: radial-gradient(circle at 50% 30%, #4b0b60 0%, #260330 58%, #190020 100%) !important;
-      box-shadow: inset 0 0 10px rgba(231, 83, 255, .14) !important;
-      pointer-events: none !important;
-    }
-
-    footer.site-footer > a.ceriabet-center-btn > * {
-      position: relative !important;
-      z-index: 3 !important;
-    }
-
-    footer.site-footer > a.ceriabet-center-btn img,
-    footer.site-footer > a.ceriabet-center-btn svg,
-    footer.site-footer > a.ceriabet-center-btn i {
-      width: 24px !important;
-      height: 24px !important;
-      max-width: 24px !important;
-      max-height: 24px !important;
-    }
-
-    footer.site-footer > a.ceriabet-center-btn .${LABEL_CLASS} {
-      position: relative !important;
-      z-index: 3 !important;
-      display: block !important;
-      margin: 0 !important;
-      color: #ff8bf2 !important;
-      font-size: 9px !important;
-      font-weight: 700 !important;
-      line-height: 1 !important;
-      white-space: nowrap !important;
-      pointer-events: none !important;
-    }
-
-    @media (min-width: 769px) {
-      footer.site-footer {
-        max-width: 450px !important;
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%) !important;
-      }
-    }
-  `;
-
-  function installStyle() {
-    let style = document.getElementById(STYLE_ID);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = STYLE_ID;
-      document.head.appendChild(style);
-    }
-    if (style.textContent !== css) style.textContent = css;
-  }
-
-  function getCenterButton(footer) {
-    return (
-      footer.querySelector('a[data-require-login="/mobile/deposit"]') ||
-      footer.querySelector('a[data-require-login*="deposit"]') ||
-      footer.querySelector('a[href="/mobile/deposit"]') ||
-      footer.querySelector('a[href*="/mobile/deposit"]') ||
-      footer.querySelectorAll("a")[2] ||
-      null
-    );
-  }
-
-  function cleanDirectText(anchor) {
-    Array.from(anchor.childNodes).forEach(node => {
-      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-        node.remove();
-      }
-    });
-  }
-
-  function updateFooter() {
-    installStyle();
-
-    const footer = document.querySelector("footer.site-footer, .site-footer");
-    if (!footer) return false;
-
-    const center = getCenterButton(footer);
-    if (!center) return false;
-
-    center.classList.add("ceriabet-center-btn");
-
-    const loginRequired = center.hasAttribute("data-require-login");
-    const href = (center.getAttribute("href") || "").toLowerCase();
-    const labelText = !loginRequired && href.includes("/mobile/deposit")
-      ? "Depo/WD"
-      : "Masuk";
-
-    cleanDirectText(center);
-
-    let label = center.querySelector(`.${LABEL_CLASS}`);
     if (!label) {
       label = document.createElement("span");
-      label.className = LABEL_CLASS;
-      center.appendChild(label);
+      label.className = "ceriabet-center-label";
+      button.appendChild(label);
     }
 
-    if (label.textContent !== labelText) label.textContent = labelText;
+    label.textContent = isDeposit ? "Depo/WD" : "Masuk";
 
-    return true;
-  }
+    set(label, "position", "relative");
+    set(label, "z-index", "5");
+    set(label, "display", "block");
+    set(label, "font-size", "9px");
+    set(label, "font-weight", "700");
+    set(label, "line-height", "1");
+    set(label, "margin-top", "3px");
+    set(label, "color", "#ff70ff");
+    set(label, "white-space", "nowrap");
+    set(label, "pointer-events", "none");
 
-  let timer = 0;
-  function scheduleUpdate() {
-    clearTimeout(timer);
-    timer = setTimeout(updateFooter, 60);
-  }
+    [...button.childNodes].forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        node.textContent = "";
+      }
+    });
 
-  installStyle();
-  updateFooter();
+    [...button.children].forEach(child => {
+      if (child === label || child.classList.contains("ceriabet-rotating-ring")) return;
+      set(child, "position", "relative");
+      set(child, "z-index", "5");
+    });
+  };
 
-  const observer = new MutationObserver(scheduleUpdate);
-  observer.observe(document.documentElement, {
+  const ensureRing = button => {
+    let ring = button.querySelector(":scope > .ceriabet-rotating-ring");
+
+    if (!ring) {
+      ring = document.createElement("span");
+      ring.className = "ceriabet-rotating-ring";
+      button.prepend(ring);
+
+      Object.assign(ring.style, {
+        position: "absolute",
+        inset: "0",
+        borderRadius: "50%",
+        pointerEvents: "none",
+        zIndex: "1",
+        background: "conic-gradient(#431063 0deg,#7c22dc 55deg,#bd4dff 105deg,#ff8dff 145deg,#d83eff 190deg,#8028e8 250deg,#49106e 315deg,#431063 360deg)",
+        boxShadow: "0 0 12px rgba(213,67,255,.70)"
+      });
+
+      const inner = document.createElement("span");
+      inner.className = "ceriabet-ring-inner";
+      Object.assign(inner.style, {
+        position: "absolute",
+        inset: "3px",
+        borderRadius: "50%",
+        background: "radial-gradient(circle at 50% 30%,#4f1268 0%,#24052f 72%)",
+        pointerEvents: "none"
+      });
+      ring.appendChild(inner);
+
+      ring.animate(
+        [
+          { transform: "rotate(0deg)" },
+          { transform: "rotate(360deg)" }
+        ],
+        {
+          duration: 3600,
+          iterations: Infinity,
+          easing: "linear"
+        }
+      );
+    }
+  };
+
+  const styleFooter = footer => {
+    if (!footer) return;
+
+    set(footer, "position", "fixed");
+    set(footer, "left", "0");
+    set(footer, "right", "0");
+    set(footer, "bottom", "0");
+    set(footer, "z-index", "2147483000");
+    set(footer, "display", "flex");
+    set(footer, "align-items", "flex-end");
+    set(footer, "justify-content", "space-between");
+    set(footer, "gap", "6px");
+    set(footer, "height", "72px");
+    set(footer, "min-height", "72px");
+    set(footer, "padding", "7px 8px calc(8px + env(safe-area-inset-bottom, 0px))");
+    set(footer, "box-sizing", "border-box");
+    set(footer, "overflow", "visible");
+    set(footer, "background", "linear-gradient(180deg,#4b0d59 0%,#280333 100%)");
+    set(footer, "border-top", "1px solid rgba(226,94,255,.38)");
+    set(footer, "box-shadow", "0 -8px 22px rgba(0,0,0,.45)");
+
+    const buttons = [...footer.querySelectorAll(":scope > a")];
+    if (!buttons.length) return;
+
+    buttons.forEach(button => {
+      set(button, "position", "relative");
+      set(button, "flex", "1 1 0");
+      set(button, "width", "auto");
+      set(button, "height", "54px");
+      set(button, "min-height", "54px");
+      set(button, "padding", "5px 3px");
+      set(button, "display", "flex");
+      set(button, "flex-direction", "column");
+      set(button, "align-items", "center");
+      set(button, "justify-content", "center");
+      set(button, "box-sizing", "border-box");
+      set(button, "overflow", "hidden");
+      set(button, "border-radius", "14px");
+      set(button, "border", "1px solid rgba(179,88,227,.55)");
+      set(button, "background", "rgba(25,3,35,.48)");
+      set(button, "color", button.getAttribute("data-active") === "true" ? "#ff55f7" : "#cbb9d5");
+      set(button, "text-decoration", "none");
+      set(button, "font-size", "9px");
+      set(button, "line-height", "1.05");
+      set(button, "text-align", "center");
+
+      button.querySelectorAll("img,svg,i").forEach(icon => {
+        set(icon, "width", "20px");
+        set(icon, "height", "20px");
+        set(icon, "max-width", "20px");
+        set(icon, "max-height", "20px");
+        set(icon, "margin", "0 0 4px 0");
+      });
+    });
+
+    const center =
+      footer.querySelector(':scope > a[href*="/mobile/deposit"]') ||
+      footer.querySelector(':scope > a[data-require-login*="/mobile/deposit"]') ||
+      buttons[2];
+
+    if (!center) return;
+
+    const href = center.getAttribute("href") || "";
+    const isDeposit = href.includes("/mobile/deposit");
+
+    set(center, "flex", "0 0 64px");
+    set(center, "width", "64px");
+    set(center, "min-width", "64px");
+    set(center, "max-width", "64px");
+    set(center, "height", "64px");
+    set(center, "min-height", "64px");
+    set(center, "max-height", "64px");
+    set(center, "margin", "0 1px");
+    set(center, "padding", "7px 4px");
+    set(center, "border", "0");
+    set(center, "border-radius", "50%");
+    set(center, "overflow", "visible");
+    set(center, "background", "#260531");
+    set(center, "transform", "translateY(-17px)");
+    set(center, "box-shadow", "0 8px 20px rgba(0,0,0,.42)");
+    set(center, "isolation", "isolate");
+
+    center.querySelectorAll("img,svg,i").forEach(icon => {
+      set(icon, "width", "24px");
+      set(icon, "height", "24px");
+      set(icon, "max-width", "24px");
+      set(icon, "max-height", "24px");
+      set(icon, "margin", "0");
+    });
+
+    ensureRing(center);
+    ensureLabel(center, isDeposit);
+
+    document.body.style.setProperty("padding-bottom", "82px", "important");
+  };
+
+  const scanDocument = doc => {
+    try {
+      const footer = doc.querySelector("footer.site-footer, .site-footer");
+      if (footer) styleFooter(footer);
+
+      doc.querySelectorAll("iframe").forEach(frame => {
+        try {
+          if (frame.contentDocument) scanDocument(frame.contentDocument);
+        } catch (_) {}
+      });
+    } catch (_) {}
+  };
+
+  let queued = false;
+  const apply = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      scanDocument(document);
+    });
+  };
+
+  apply();
+  document.addEventListener("DOMContentLoaded", apply);
+  window.addEventListener("load", apply);
+  window.addEventListener("resize", apply);
+
+  new MutationObserver(apply).observe(document.documentElement, {
     childList: true,
     subtree: true,
     attributes: true,
     attributeFilter: ["href", "data-require-login", "data-active", "class"]
   });
 
-  let attempts = 0;
-  const finder = setInterval(() => {
-    updateFooter();
-    attempts += 1;
-    if (attempts >= 120) clearInterval(finder);
-  }, 500);
-
-  window.addEventListener("load", updateFooter);
-  window.addEventListener("resize", scheduleUpdate);
+  setInterval(apply, 1000);
 })();
 </script>
