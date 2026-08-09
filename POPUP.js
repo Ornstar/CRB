@@ -649,7 +649,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          KUMPULKAN DI SINI
+          🎲 KUMPULKAN DISINI
         </a>
 
         <button
