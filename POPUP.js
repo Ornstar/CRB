@@ -306,6 +306,7 @@
       }
 
       #crb-dots {
+        display: none !important;
         position: absolute;
         left: 50%;
         bottom: 10px;
@@ -648,7 +649,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          🎲 KUMPULKAN DISINI
+          KUMPULKAN DI SINI
         </a>
 
         <button
