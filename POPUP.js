@@ -615,11 +615,11 @@
 
         <a
           class="crb-btn"
-          href="https://access.vpnceria.life/prediksi-bola"
+          href="https://access.vpnceria.life/ceriamerdeka"
           target="_blank"
           rel="noopener noreferrer"
         >
-          PREDIKSI BOLA ⚽
+          KUMPULKAN DI SINI ⚽
         </a>
 
         <button
