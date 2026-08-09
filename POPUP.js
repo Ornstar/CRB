@@ -648,7 +648,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          KUMPULKAN DI SINI
+          🎲 KUMPULKAN DI SINI
         </a>
 
         <button
