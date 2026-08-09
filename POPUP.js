@@ -469,6 +469,34 @@
         animation: crbShine 2s infinite;
       }
 
+      /* HANYA TOMBOL KUMPULKAN DI SINI - WARNA MERAH */
+      .crb-kumpulkan {
+        background:
+          linear-gradient(
+            180deg,
+            #e52a2a 0%,
+            #d71920 28%,
+            #b90816 62%,
+            #72000b 100%
+          ) !important;
+        border: 1px solid #f28a47 !important;
+        box-shadow:
+          0 0 12px rgba(229, 42, 42, .55),
+          0 0 26px rgba(180, 8, 22, .30),
+          0 9px 22px rgba(0, 0, 0, .55),
+          inset 0 1px 0 rgba(255, 190, 130, .45) !important;
+      }
+
+      .crb-kumpulkan::before {
+        background:
+          linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0),
+            rgba(255, 218, 190, .95),
+            rgba(255, 255, 255, 0)
+          ) !important;
+      }
+
       @media (max-width: 768px) {
         #${POPUP_ID} {
           gap: 8px;
@@ -615,12 +643,12 @@
         </a>
 
         <a
-          class="crb-btn"
+          class="crb-btn crb-kumpulkan"
           href="https://access.vpnceria.life/ceriamerdeka"
           target="_blank"
           rel="noopener noreferrer"
         >
-          KUMPULKAN DI SINI ⚽
+          KUMPULKAN DI SINI
         </a>
 
         <button
